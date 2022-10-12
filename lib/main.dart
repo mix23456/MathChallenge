@@ -15,53 +15,84 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String output = 'None';
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  String mathchallenge(String input) {
+    String casenum;
+    if (input.isNotEmpty) {
+      if (input.length != 1) {
+        if (input.length.isEven) {
+          casenum = '1';
+        } else {
+          casenum = '2';
+        }
+      } else {
+        casenum = '0';
+      }
+    } else {
+      casenum = 'default';
+    }
+    switch (casenum) {
+      case '0':
+        return '-1';
+      case '1':
+        if (input.substring(0, input.length ~/ 2) !=
+            input.substring(input.length ~/ 2, input.length)) {
+          for (int i = 2; i <= input.length / 2; i++) {
+            print('${input.substring(0, i)}  ${input.substring(i, i + i)}');
+            if (input.substring(0, i) != input.substring(i, i + i)) {
+              return 'input.';
+            } else {
+              return input.substring(0, i);
+            }
+          }
+        } else {
+          return input.substring(0, input.length ~/ 2);
+        }
+        return '';
+      default:
+        return 'None';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            Container(
+              width: 400,
+              margin: const EdgeInsets.all(16),
+              child: TextField(
+                decoration: const InputDecoration(labelText: 'Typesome'),
+                onChanged: (value) {
+                  setState(() {
+                    output = mathchallenge(value);
+                  });
+                },
+              ),
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Output: $output',
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
