@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -28,43 +28,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String output = 'None';
+  String output = 'No Input';
 
   String mathchallenge(String input) {
-    String casenum;
     if (input.isNotEmpty) {
       if (input.length != 1) {
-        if (input.length.isEven) {
-          casenum = '1';
-        } else {
-          casenum = '2';
+        for (int i = input.length ~/ 2; i > 0; i--) {
+          var temp = input.substring(0, i);
+          // ignore: dead_code
+          for (int j = temp.length; j < input.length; j += temp.length) {
+            if (input.startsWith(temp, j) && input.length % temp.length == 0) {
+              return temp;
+            }
+            break;
+          }
         }
+        return '-1';
       } else {
-        casenum = '0';
+        return '-1';
       }
     } else {
-      casenum = 'default';
-    }
-    switch (casenum) {
-      case '0':
-        return '-1';
-      case '1':
-        if (input.substring(0, input.length ~/ 2) !=
-            input.substring(input.length ~/ 2, input.length)) {
-          for (int i = 2; i <= input.length / 2; i++) {
-            print('${input.substring(0, i)}  ${input.substring(i, i + i)}');
-            if (input.substring(0, i) != input.substring(i, i + i)) {
-              return 'input.';
-            } else {
-              return input.substring(0, i);
-            }
-          }
-        } else {
-          return input.substring(0, input.length ~/ 2);
-        }
-        return '';
-      default:
-        return 'None';
+      return 'No Input';
     }
   }
 
